@@ -341,14 +341,14 @@ class ResnetGenerator(nn.Module):
         model = [nn.ReflectionPad2d(3),
                  nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0, bias=use_bias),
                  norm_layer(ngf),
-                 nn.ReLU(True)]
+                 nn.LeakyReLU(negative_slope=0.01, inplace=True)]
 
         n_downsampling = 2
         for i in range(n_downsampling):  # add downsampling layers
             mult = 2 ** i
             model += [nn.Conv2d(ngf * mult, ngf * mult * 2, kernel_size=3, stride=2, padding=1, bias=use_bias),
                       norm_layer(ngf * mult * 2),
-                      nn.ReLU(True)]
+                      nn.LeakyReLU(negative_slope=0.01, inplace=True)]
 
         mult = 2 ** n_downsampling
         for i in range(n_blocks):       # add ResNet blocks
